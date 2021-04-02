@@ -10,11 +10,16 @@ namespace ORM_Introduction_EF_Core
     {
         public ACDBContext()
         {
+            //It is if we create a database with CodFirst method
+            Database.EnsureCreated();
+            
+            //If we use DatabaseFirst method (reverse engineering) - use it:
+            //Scaffold - DbContext "Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer
         }
 
         public ACDBContext(DbContextOptions<ACDBContext> options)
             : base(options)
-        {
+        {           
         }
 
         public virtual DbSet<Customer> Customers { get; set; }
@@ -26,7 +31,7 @@ namespace ORM_Introduction_EF_Core
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\ProjectsV13;Database=ACDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=ACDB;Trusted_Connection=True;");
             }
         }
 

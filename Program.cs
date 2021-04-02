@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,17 +11,14 @@ namespace ORM_Introduction_EF_Core
         {
             //using (ApplicationContext db = new ApplicationContext())
             //{
-            //    // создаем два объекта User
             //    User user1 = new User { Name = "Tom", Age = 33 };
             //    User user2 = new User { Name = "Alice", Age = 26 };
 
-            //    // добавляем их в бд
             //    db.Users.Add(user1);
             //    db.Users.Add(user2);
             //    db.SaveChanges();
             //    Console.WriteLine("Objects are added");
 
-            //    // получаем объекты из бд и выводим на консоль
             //    var users = db.Users.ToList();
             //    Console.WriteLine("Get objects from database");
             //    foreach (User u in users)
@@ -29,131 +27,118 @@ namespace ORM_Introduction_EF_Core
             //    }
             //}
 
-            // Добавление
+            // CREATE (INSERT)
             using (ACDBContext db = new ACDBContext())
-            {
-                User user1 = new User { Name = "Tom", Age = 33 };
-                User user2 = new User { Name = "Alice", Age = 26 };
+            {                
+                Customer customer1 = new Customer { FirstName = "Gheorghe", MainPhoneNum = "12634654635" };
+                Customer customer2 = new Customer { FirstName = "Michael", MainPhoneNum = "54635465465" };
 
                 // Добавление
-                db.Users.Add(user1);
-                db.Users.Add(user2);
+                db.Customers.Add(customer1);
+                db.Customers.Add(customer2);
 
                 //db.Users.AddRange(user1, user2);
 
                 db.SaveChanges();
             }
 
-            // получение
+            // READ ALL (SELECT ALL)
             using (ACDBContext db = new ACDBContext())
             {
-                // получаем объекты из бд и выводим на консоль
-                var users = db.Users.ToList();
-                Console.WriteLine("Данные после добавления:");
-                foreach (User u in users)
+                var customers = db.Customers.ToList();
+                Console.WriteLine("Selected data:");
+                foreach (var c in customers)
                 {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
+                    Console.WriteLine(c.ToString());
                 }
             }
 
-            // Редактирование
+            // READ BY ID (SELECT BY ID)
             using (ACDBContext db = new ACDBContext())
             {
-                // получаем первый объект
-                User user = db.Users.FirstOrDefault();
-                if (user != null)
-                {
-                    user.Name = "Bob";
-                    user.Age = 44;
-                    //обновляем объект
-                    //db.Users.Update(user);
-                    db.SaveChanges();
-                }
-                // выводим данные после обновления
-                Console.WriteLine("\nДанные после редактирования:");
-                var users = db.Users.ToList();
-                foreach (User u in users)
-                {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
-                }
+                var customer = db.Customers.Find(2);
+                Console.WriteLine("Selected data is: " + customer.ToString());
             }
 
-            // Редактирование
-            using (ApplicationContext db = new ApplicationContext())
+            // UPDATE
+            Customer customer_1 = null;
+            using (ACDBContext db = new ACDBContext())
             {
-                // Редактирование
-                if (user != null)
+                customer_1 = db.Customers.Find(5);
+                Console.WriteLine("Selected data for update is: " + customer_1.ToString());
+            }
+
+            using (ACDBContext db = new ACDBContext())
+            {
+                if (customer_1 != null)
                 {
-                    user.Name = "Sam";
-                    user.Age = 33;
-                    db.Users.Update(user);
-
-                    //db.Users.UpdateRange(user1, user2);
-
+                    customer_1.FirstName = "Sam";
+                    customer_1.LastName = "Deep";
+                    db.Customers.Update(customer_1);
                 }
                 db.SaveChanges();
-                // выводим данные после обновления
-                Console.WriteLine("\nДанные после редактирования:");
-                var users = db.Users.ToList();
-                foreach (var u in users)
+
+                Console.WriteLine("\nAfter update:");
+
+                var customers = db.Customers.ToList();
+                foreach (var c in customers)
                 {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
+                    Console.WriteLine(c.ToString());
                 }
             }
 
-            User user = null;
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                // получаем объект
-                user = db.Users.FirstOrDefault();
-                Console.WriteLine("Данные до редактирования:");
-                var users = db.Users.ToList();
-                foreach (User u in users)
-                {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
-                }
-            }
-            //...................
-
-            // Редактирование
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                // Редактирование
-                if (user != null)
-                {
-                    user.Name = "Sam";
-                    user.Age = 33;
-                }
-                db.SaveChanges();
-                // выводим данные после обновления
-                Console.WriteLine("\nДанные после редактирования:");
-                var users = db.Users.ToList();
-                foreach (var u in users)
-                {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
-                }
-            }
-
-            // Удаление
+            // DELETE
+            customer_1 = null;
             using (ACDBContext db = new ACDBContext())
             {
-                // получаем первый объект
-                User user = db.Users.FirstOrDefault();
-                if (user != null)
+                customer_1 = db.Customers.Find(5);
+                Console.WriteLine("Selected data for delete is: " + customer_1.ToString());
+            }
+            using (ACDBContext db = new ACDBContext())
+            {                
+                if (customer_1 != null)
                 {
-                    //удаляем объект
-                    db.Users.Remove(user);
+                    db.Customers.Remove(customer_1);
 
-                   // db.Users.RemoveRange(user1, user2);
+                    // db.Customers.RemoveRange(customer1, customer2);
 
                     db.SaveChanges();
                 }
-                // выводим данные после обновления
-                Console.WriteLine("\nДанные после удаления:");
-                var users = db.Users.ToList();
-                foreach (User u in users)
+                Console.WriteLine("\nData after delete:");
+
+                var customers = db.Customers.ToList();
+
+                foreach (Customer u in customers)
                 {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
+                    Console.WriteLine(u.ToString());
+                }                
+            }
+
+            // CUSTOM DELETE - ALL REPEATED
+            using (ACDBContext db = new ACDBContext())
+            {
+                var customers_1 = db.Customers.ToList();
+
+                var customers_2 = new List<Customer>();
+                
+                foreach(var c in customers_1)
+                {
+                    if (customers_2.Any(i => i.FirstName == c.FirstName))
+                    {
+                        db.Customers.Remove(c);
+                    }
+                    else
+                        customers_2.Add(c);
+                }
+                db.SaveChanges();
+                
+                Console.WriteLine("\nData after delete:");
+
+                var customers = db.Customers.ToList();
+
+                foreach (Customer c in customers)
+                {
+                    Console.WriteLine(c.ToString());
                 }
             }
         }
@@ -176,7 +161,7 @@ namespace ORM_Introduction_EF_Core
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\ProjectsV13;Database=helloappdb_1;Trusted_Connection=True;");
         }
     }
 }
