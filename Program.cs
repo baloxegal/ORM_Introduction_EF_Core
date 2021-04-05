@@ -9,23 +9,23 @@ namespace ORM_Introduction_EF_Core
     {
         static void Main(string[] args)
         {
-            //using (ApplicationContext db = new ApplicationContext())
-            //{
-            //    User user1 = new User { Name = "Tom", Age = 33 };
-            //    User user2 = new User { Name = "Alice", Age = 26 };
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                User user1 = new User { Name = "Tom", Age = 33 };
+                User user2 = new User { Name = "Alice", Age = 26 };
 
-            //    db.Users.Add(user1);
-            //    db.Users.Add(user2);
-            //    db.SaveChanges();
-            //    Console.WriteLine("Objects are added");
+                db.Users.Add(user1);
+                db.Users.Add(user2);
+                db.SaveChanges();
+                Console.WriteLine("Objects are added");
 
-            //    var users = db.Users.ToList();
-            //    Console.WriteLine("Get objects from database");
-            //    foreach (User u in users)
-            //    {
-            //        Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
-            //    }
-            //}
+                var users = db.Users.ToList();
+                Console.WriteLine("Get objects from database");
+                foreach (User u in users)
+                {
+                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
+                }
+            }
 
             // CREATE (INSERT)
             using (ACDBContext db = new ACDBContext())
@@ -64,7 +64,7 @@ namespace ORM_Introduction_EF_Core
             Customer customer_1 = null;
             using (ACDBContext db = new ACDBContext())
             {
-                customer_1 = db.Customers.Find(5);
+                customer_1 = db.Customers.Find(1);
                 Console.WriteLine("Selected data for update is: " + customer_1.ToString());
             }
 
@@ -91,7 +91,7 @@ namespace ORM_Introduction_EF_Core
             customer_1 = null;
             using (ACDBContext db = new ACDBContext())
             {
-                customer_1 = db.Customers.Find(5);
+                customer_1 = db.Customers.Find(1);
                 Console.WriteLine("Selected data for delete is: " + customer_1.ToString());
             }
             using (ACDBContext db = new ACDBContext())
@@ -161,7 +161,7 @@ namespace ORM_Introduction_EF_Core
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\ProjectsV13;Database=helloappdb_1;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=NewAppDB;Trusted_Connection=True;");
         }
     }
 }

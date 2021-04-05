@@ -12,9 +12,9 @@ namespace ORM_Introduction_EF_Core
         {
             //It is if we create a database with CodFirst method
             Database.EnsureCreated();
-            
+
             //If we use DatabaseFirst method (reverse engineering) - use it:
-            //Scaffold - DbContext "Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer
+            //Scaffold-DbContext "Server=(localdb)\mssqllocaldb;Database=ACDBC;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer
         }
 
         public ACDBContext(DbContextOptions<ACDBContext> options)
